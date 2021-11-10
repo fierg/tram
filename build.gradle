@@ -9,11 +9,18 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    mavenCentral()
 }
 
 dependencies {
+    //kotlin cli parser
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.3")
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    // kotlin log4j
+    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
+    implementation("org.apache.logging.log4j:log4j-api:2.11.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.11.1")
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
@@ -24,4 +31,10 @@ test {
 
 application {
     mainClassName = "Main"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
 }

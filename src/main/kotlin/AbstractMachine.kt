@@ -22,10 +22,12 @@ class AbstractMachine(private val program: Array<Instruction>) {
             Instruction.CONST -> const(instruction)
             Instruction.STORE -> store(instruction)
             Instruction.LOAD -> load(instruction)
-            Instruction.ADD -> add(instruction)
-            Instruction.MUL -> mul(instruction)
             Instruction.GOTO -> goto(instruction)
             Instruction.IFZERO -> ifZero(instruction)
+            Instruction.ADD -> add()
+            Instruction.MUL -> mul()
+            Instruction.DIV -> div()
+            Instruction.SUB -> sub()
             Instruction.NOP -> noop()
             Instruction.HALT -> halt()
             else -> throw UnexpectedException("Unexpected instruction: $instruction")
@@ -41,7 +43,6 @@ class AbstractMachine(private val program: Array<Instruction>) {
             pc = instruction.arg1
         else
             pc += 1
-
         top -= 1
     }
 
@@ -53,25 +54,25 @@ class AbstractMachine(private val program: Array<Instruction>) {
         pc = -1
     }
 
-    private fun add(instruction: Instruction) {
+    private fun add() {
         stack[top - 1] = stack[top - 1] + stack[top]
         top -=1
         pc += 1
     }
 
-    private fun sub(instruction: Instruction) {
+    private fun sub() {
         stack[top - 1] = stack[top - 1] - stack[top]
         top -=1
         pc += 1
     }
 
-    private fun mul(instruction: Instruction) {
+    private fun mul() {
         stack[top - 1] = stack[top - 1] * stack[top]
         top -=1
         pc += 1
     }
 
-    private fun div(instruction: Instruction) {
+    private fun div() {
         stack[top - 1] = stack[top - 1] / stack[top]
         top -=1
         pc += 1
