@@ -1,8 +1,11 @@
 import de.unitrier.st.uap.w21.tram.Instruction
+import org.apache.logging.log4j.kotlin.logger
 import stack.LinkedListStack
 import java.rmi.UnexpectedException
 
-class AbstractMachine(private val program: Array<Instruction>) {
+class AbstractMachine(private val program: Array<Instruction>, private val debug: Boolean) {
+    val logger = logger(Main.javaClass.simpleName)
+
     private val stack = LinkedListStack()
     private var top = 0
     private var pp = 0
@@ -12,11 +15,14 @@ class AbstractMachine(private val program: Array<Instruction>) {
     fun run() {
         while (pc >= 0) {
             execute(program[pc])
+            if (debug)
+                logger.debug(this.toString())
         }
     }
 
     private fun execute(instruction: Instruction) {
-        println("Instruction: $instruction")
+        if (debug)
+            println("Instruction: $instruction")
 
         when (instruction.opcode) {
             Instruction.CONST -> const(instruction)
@@ -94,6 +100,10 @@ class AbstractMachine(private val program: Array<Instruction>) {
         stack[top + 1] = instruction.arg1
         top += 1
         pc += 1
+    }
+
+    override fun toString(): String {
+        return "Configuration: PC = $pc, PP = $pp, FP = $fp, TOP = $top , stack: $stack"
     }
 
 }
