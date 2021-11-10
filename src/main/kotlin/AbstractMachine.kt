@@ -36,8 +36,40 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
             Instruction.SUB -> sub()
             Instruction.NOP -> noop()
             Instruction.HALT -> halt()
+            Instruction.INVOKE -> invoke(instruction)
+            Instruction.RETURN -> returnf(instruction)
             else -> throw UnexpectedException("Unexpected instruction: $instruction")
         }
+    }
+
+    private fun returnf(instruction: Instruction) {
+        val res = stack[top]
+        top = pp
+        pc = stack[fp]
+        pp = stack[fp + 1]
+        fp = stack[fp + 2]
+        stack[top] = res
+    }
+
+    private fun invoke(instruction: Instruction) {
+        stack[top + 1] = pc + 1
+        stack[top + 2] = pp
+        stack[top + 3] = fp
+        stack[top + 4] = spp(instruction.arg3, pp, fp)
+        stack[top + 5] = sfp(instruction.arg3, pp, fp)
+        pp = top - instruction.arg1 + 1
+        fp = top + 1
+        pc = instruction.arg2
+    }
+
+    private fun sfp(d: Int, pp: Int, fp: Int): Int {
+        return if (d == 0) fp
+        else sfp(d - 1, stack[fp + 3], stack[fp + 4])
+    }
+
+    private fun spp(d: Int, pp: Int, fp: Int): Int {
+        return if (d == 0) fp
+        else spp(d - 1, stack[fp + 3], stack[fp + 4])
     }
 
     private fun noop() {
@@ -62,37 +94,37 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
 
     private fun add() {
         stack[top - 1] = stack[top - 1] + stack[top]
-        top -=1
+        top -= 1
         pc += 1
     }
 
     private fun sub() {
         stack[top - 1] = stack[top - 1] - stack[top]
-        top -=1
+        top -= 1
         pc += 1
     }
 
     private fun mul() {
         stack[top - 1] = stack[top - 1] * stack[top]
-        top -=1
+        top -= 1
         pc += 1
     }
 
     private fun div() {
         stack[top - 1] = stack[top - 1] / stack[top]
-        top -=1
+        top -= 1
         pc += 1
     }
 
     private fun load(instruction: Instruction) {
-        stack[top + 1] = stack[pp + instruction.arg1]
+        stack[top + 1] = stack[spp(instruction.arg2, pp, fp) + instruction.arg1]
         top += 1
         pc += 1
     }
 
     private fun store(instruction: Instruction) {
-        stack[pp + instruction.arg1] = stack[top]
-        top -=1
+        stack[spp(instruction.arg2, pp, fp) + instruction.arg1] = stack[top]
+        top -= 1
         pc += 1
     }
 
