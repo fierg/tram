@@ -1,0 +1,27 @@
+package stack
+
+class LinkedListStack : IStack<Int> {
+
+    private val stack = mutableListOf<Int>()
+
+    override operator fun get(index: Int): Int {
+        return if (index < stack.size) {
+            stack[index]
+        } else {
+            //list too short
+            stack.add(index, 0)
+            0
+        }
+    }
+
+    override operator fun set(index: Int, value: Int) {
+        if (index < stack.size) {
+            stack[index] = value
+        } else {
+            stack.add(0)
+            this[index] = value
+        }
+    }
+
+
+}
