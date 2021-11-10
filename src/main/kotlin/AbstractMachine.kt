@@ -37,10 +37,11 @@ class AbstractMachine(private val program: Array<Instruction>) {
     }
 
     private fun ifZero(instruction: Instruction) {
-        if (stack[top] == 0)
+        if (stack.pop() == 0)
             pc = instruction.arg1
         else
             pc += 1
+
         top -= 1
     }
 
@@ -53,26 +54,26 @@ class AbstractMachine(private val program: Array<Instruction>) {
     }
 
     private fun add(instruction: Instruction) {
-        stack[top - 1] = stack[top - 1] + stack[top]
-        top += 1
+        stack[top - 1] = stack[top - 1] + stack.pop()
+        top -=1
         pc += 1
     }
 
     private fun sub(instruction: Instruction) {
-        stack[top - 1] = stack[top - 1] - stack[top]
-        top += 1
+        stack[top - 1] = stack[top - 1] - stack.pop()
+        top -=1
         pc += 1
     }
 
     private fun mul(instruction: Instruction) {
-        stack[top - 1] = stack[top - 1] * stack[top]
-        top += 1
+        stack[top - 1] = stack[top - 1] * stack.pop()
+        top -=1
         pc += 1
     }
 
     private fun div(instruction: Instruction) {
-        stack[top - 1] = stack[top - 1] / stack[top]
-        top += 1
+        stack[top - 1] = stack[top - 1] / stack.pop()
+        top -=1
         pc += 1
     }
 
@@ -83,8 +84,8 @@ class AbstractMachine(private val program: Array<Instruction>) {
     }
 
     private fun store(instruction: Instruction) {
-        stack[pp + instruction.arg1] = stack[top]
-        top -= 1
+        stack[pp + instruction.arg1] = stack.pop()
+        top -=1
         pc += 1
     }
 
