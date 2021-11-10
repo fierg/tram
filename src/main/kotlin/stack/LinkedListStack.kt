@@ -18,10 +18,13 @@ class LinkedListStack : IStack<Int> {
         if (index < stack.size) {
             stack[index] = value
         } else {
+            //list to short
             stack.add(0)
             this[index] = value
         }
     }
+
+    fun pop() = stack.removeAt(stack.last())
 
 
 }
