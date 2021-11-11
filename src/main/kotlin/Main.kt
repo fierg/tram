@@ -17,18 +17,18 @@ internal object Main {
         if (debug) logger.info("debug mode activated")
 
         println("Running code from class (program1) ... \n")
-        //AbstractMachine(Instruction.program1, debug).run()
+        AbstractMachine(Instruction.program1, debug).run()
         println("\n\n")
 
         println("Running code from file data/program1.tram ...\n")
         val program1 = FileReader().getInstructions("data/program1.tram")
-        //AbstractMachine(program1, debug).run()
+        AbstractMachine(program1, debug).run()
         println("\n\n")
 
         val program2 = cli.second
         if (!program2.isNullOrEmpty()) {
             println("Running code from command line arguments...\n")
-            //AbstractMachine(FileReader().getInstructions(program2), debug).run()
+            AbstractMachine(FileReader().getInstructions(program2), debug).run()
         }
         println("\n\n")
 
