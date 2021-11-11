@@ -36,6 +36,7 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
             Instruction.SUB -> sub()
             Instruction.NOP -> noop()
             Instruction.HALT -> halt()
+            Instruction.MOD -> mod()
             Instruction.INVOKE -> invoke(instruction)
             Instruction.RETURN -> returnf(instruction)
             else -> throw UnexpectedException("Unexpected instruction: $instruction")
@@ -117,6 +118,14 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
         pc += 1
         stack.pop()
     }
+
+    private fun mod() {
+        stack[top - 1] = stack[top - 1] % stack[top]
+        top -= 1
+        pc += 1
+        stack.pop()
+    }
+
 
     private fun load(instruction: Instruction) {
         stack[top + 1] = stack[spp(instruction.arg2, pp, fp) + instruction.arg1]

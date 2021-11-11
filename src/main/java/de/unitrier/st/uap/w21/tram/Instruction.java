@@ -29,6 +29,7 @@ public class Instruction
 	public final static int INVOKE = 16;
 	public final static int RETURN = 17;
     public final static int POP = 18;
+    public final static int MOD = 19;
 
 
 	public Instruction(int opcode, Integer arg1, Integer arg2, Integer arg3)
@@ -119,6 +120,7 @@ public class Instruction
 			case Instruction.SUB -> retStr += "SUB";
 			case Instruction.MUL -> retStr += "MUL";
 			case Instruction.DIV -> retStr += "DIV";
+			case Instruction.MOD -> retStr += "MOD";
 			case Instruction.LT -> retStr += "LT";
 			case Instruction.GT -> retStr += "GT";
 			case Instruction.EQ -> retStr += "EQ";
