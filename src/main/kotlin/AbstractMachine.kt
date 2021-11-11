@@ -108,12 +108,14 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
         stack[top - 1] = stack[top - 1] * stack[top]
         top -= 1
         pc += 1
+        stack.pop()
     }
 
     private fun div() {
         stack[top - 1] = stack[top - 1] / stack[top]
         top -= 1
         pc += 1
+        stack.pop()
     }
 
     private fun load(instruction: Instruction) {
@@ -126,6 +128,7 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
         stack[spp(instruction.arg2, pp, fp) + instruction.arg1] = stack[top]
         top -= 1
         pc += 1
+        stack.pop()
     }
 
     private fun const(instruction: Instruction) {

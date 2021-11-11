@@ -10,7 +10,7 @@ class LinkedListStack : IStack<Int> {
         } else {
             //list too short
             stack.add(index, 0)
-            0
+            return get(index)
         }
     }
 
@@ -24,7 +24,7 @@ class LinkedListStack : IStack<Int> {
         }
     }
 
-    fun pop() = stack.removeAt(stack.last())
+    fun pop() = stack.removeAt(stack.size-1)
 
     override fun toString(): String {
         return stack.toString()
