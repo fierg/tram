@@ -24,7 +24,7 @@ class LinkedListStack : IStack<Int> {
         }
     }
 
-    fun pop() = stack.removeAt(stack.size-1)
+    override fun pop() = stack.removeAt(stack.size-1)
 
     override fun toString(): String {
         return stack.toString()

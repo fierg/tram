@@ -39,8 +39,13 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
             Instruction.MOD -> mod()
             Instruction.INVOKE -> invoke(instruction)
             Instruction.RETURN -> returnf(instruction)
+            Instruction.EQ -> eq(instruction)
             else -> throw UnexpectedException("Unexpected instruction: $instruction")
         }
+    }
+
+    private fun eq(instruction: Instruction) {
+        TODO("Not yet implemented")
     }
 
     private fun returnf(instruction: Instruction) {
@@ -56,21 +61,21 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
         stack[top + 1] = pc + 1
         stack[top + 2] = pp
         stack[top + 3] = fp
-        stack[top + 4] = spp(instruction.arg3, pp, fp)
-        stack[top + 5] = sfp(instruction.arg3, pp, fp)
+        stack[top + 4] = spp(instruction.arg3, fp)
+        stack[top + 5] = sfp(instruction.arg3, fp)
         pp = top - instruction.arg1 + 1
         fp = top + 1
         pc = instruction.arg2
     }
 
-    private fun sfp(d: Int, pp: Int, fp: Int): Int {
+    private fun sfp(d: Int, fp: Int): Int {
         return if (d == 0) fp
-        else sfp(d - 1, stack[fp + 3], stack[fp + 4])
+        else sfp(d - 1, stack[fp + 4])
     }
 
-    private fun spp(d: Int, pp: Int, fp: Int): Int {
+    private fun spp(d: Int, fp: Int): Int {
         return if (d == 0) fp
-        else spp(d - 1, stack[fp + 3], stack[fp + 4])
+        else spp(d - 1, stack[fp + 4])
     }
 
     private fun noop() {
@@ -128,13 +133,13 @@ class AbstractMachine(private val program: Array<Instruction>, private val debug
 
 
     private fun load(instruction: Instruction) {
-        stack[top + 1] = stack[spp(instruction.arg2, pp, fp) + instruction.arg1]
+        stack[top + 1] = stack[spp(instruction.arg2, fp) + instruction.arg1]
         top += 1
         pc += 1
     }
 
     private fun store(instruction: Instruction) {
-        stack[spp(instruction.arg2, pp, fp) + instruction.arg1] = stack[top]
+        stack[spp(instruction.arg2, fp) + instruction.arg1] = stack[top]
         top -= 1
         pc += 1
         stack.pop()
