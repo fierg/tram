@@ -39,3 +39,9 @@ jar {
         attributes 'Main-Class': 'Main'
     }
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(15))
+    }
+}
